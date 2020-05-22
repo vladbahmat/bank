@@ -1,5 +1,8 @@
 import psycopg2
 from server import Server
+import datetime
+from datetime import date
+import time
 
 server=Server()
 class Admin:
@@ -12,17 +15,25 @@ class Admin:
         cursor.execute('SELECT * FROM clients LIMIT 100;')
         for row in cursor:
             server.sending(str(row[0]))
+            time.sleep(0.1)
             server.sending(str(row[1]))
+            time.sleep(0.1)
             server.sending(str(row[2]))
         server.sending("end")
 
-    def add_new_user(self):
-        login=server.recover()
-        password=server.recover()
+    def add_bond(self):
+        cost=server.recover()
+        long=server.recover()
+        user_id=0
+        date=datetime.date.today()
         conn=psycopg2.connect(dbname='bank',user='postgres',password='Lipetsk4859',host='localhost')
         cursor=conn.cursor()
-        new_record=(str(login),str(password))
-        string="INSERT INTO users (login,password) VALUES ('" + new_record[0]+"','"+new_record[1]+"')"
+        cursor.execute('SELECT * FROM bond LIMIT 100;')
+        count=0
+        for row in cursor:
+            count=int(row[4])
+        new_record=(str(count+1),str(cost),str(long),str(user_id),str(date))
+        string="INSERT INTO bond (bond_id,cost,long,user_id,date) VALUES ('"+new_record[0]+"','" + new_record[1]+"','"+new_record[2]+"','"+new_record[3]+"','"+new_record[4]+"')"
         cursor.execute(string)
         conn.commit()
 
@@ -42,6 +53,28 @@ class Admin:
         else:
             print("Can't find this admin")
             return False
+
+    def update_user_info(self):
+        conn=psycopg2.connect(dbname='bank',user='postgres',password='Lipetsk4859',host='localhost')
+        cursor=conn.cursor()
+        string="SELECT * FROM clients LIMIT 100"
+        cursor.execute(string)
+        for row in cursor:
+            time.sleep(0.1)
+            server.sending(str(row[0]))
+            time.sleep(0.1)
+            server.sending(str(row[1]))
+            time.sleep(0.1)
+            server.sending(str(row[2]))
+        server.sending("end")
+        buf=server.recover()
+        if buf=='False':
+            print("No client with this login")
+        else:
+            buf1=server.recover()
+            string="UPDATE clients SET login='"+str(buf1)+"' WHERE login='"+str(buf)+"'"
+            cursor.execute(string)
+            conn.commit()
 
     @property
     def login(self):

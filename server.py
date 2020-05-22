@@ -3,7 +3,7 @@ import socket
 class Server:
     def __init__(self):
         self.host="127.0.0.1"
-        self.port = 6500
+        self.port = 1280
         self.sock=socket
 
     def create_connection_server(self):
@@ -27,7 +27,7 @@ class Server:
 class Client:
     def __init__(self):
         self.host="127.0.0.1"
-        self.port=6500
+        self.port=1280
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.connect((self.host, self.port))
 

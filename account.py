@@ -3,5 +3,5 @@ class Account:
         self.account_id=0
         self.money=0
         self.account_name=''
-        self.money_type=''
         self.client_id=0
+
