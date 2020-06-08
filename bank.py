@@ -99,7 +99,7 @@ class Bank:
         cursor.execute('SELECT * FROM clients LIMIT 100;')
         for row in cursor:
             count=int(row[0])
-        new_record=(str(count+1),str(login),str(password))
+        new_record=(str(count+2),str(login),str(password))
         string="INSERT INTO clients (id,login,password) VALUES ('"+new_record[0]+"','" + new_record[1]+"','"+new_record[2]+"')"
         cursor.execute(string)
         conn.commit()
